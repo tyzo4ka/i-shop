@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="POST" action="#">
+        {% csrf_token %}
+        <table class="table">
+            <h1>Категории</h1>
+            {% if perms.webapp.add_category %}
+                <a href="{% url 'webapp:category_add' %}" class="btn btn-success  ml-5 my-3 hiddenbutton">Добавить
+                    категорию</a>
+            {% endif %}
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Название</th>
+                <th class="symbol hiddenbutton" scope="col">Редактировать</th>
+                <th class="symbol hiddenbutton" scope="col">Удалить</th>
+            </tr>
+            </thead>
+            {% for category in categories %}
+                <tbody>
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ category.category_name }}</td>
+                    {% if perms.webapp.change_category %}
+                        <td class="symbol"><a class='update hiddenbutton'
+                                              href="{% url 'webapp:category_change' category.pk %}">&#x270E;</a></td>
+                    {% endif %}
+                    {% if perms.webapp.delete_category %}
+                        <td class="symbol"><a class='delete hiddenbutton'
+                                              href="{% url 'webapp:category_delete' category.pk %}" style="color: red">&times;</a>
+                        </td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </form>
+{% endblock %}

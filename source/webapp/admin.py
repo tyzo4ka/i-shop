@@ -1,27 +1,19 @@
-# from django.contrib import admin
-# from webapp.models import Task, Status, Type, Project, Team
+from django.contrib import admin
+from webapp.models import Category, Product
 
 
-# class TaskAdmin(admin.ModelAdmin):
-#     list_display = ['pk', 'summary', 'description', 'project', 'status', 'type', 'created_by', 'assigned_to', 'created_at', 'updated_at']
-#     list_filter = ['project', 'status', 'type', 'created_by', 'assigned_to']
-#     list_display_links = ['pk', 'summary', 'description']
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'category_name']
+    list_filter = ['category_name']
+    list_display_links = ['pk', 'category_name']
 
 
-# class ProjectAdmin(admin.ModelAdmin):
-#     list_display = ['pk', 'name', 'description', 'created_at', 'updated_at', 'project_status']
-#     list_filter = ['name', 'created_at', 'project_status']
-#     list_display_links = ['name']
-
-# class TeamAdmin(admin.ModelAdmin):
-#     list_display = ['pk', 'user', 'project', 'start', 'end']
-#     list_filter = ['user', 'project', 'start', 'end']
-#     list_display_links = ['user']
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'name', 'category', 'price', 'in_stock']
+    list_filter = ['name', 'category', 'price', 'in_stock']
+    list_display_links = ['name', 'category', 'price', 'in_stock']
 
 
-# admin.site.register(Task, TaskAdmin)
-# admin.site.register(Status)
-# admin.site.register(Type)
-# admin.site.register(Project, ProjectAdmin)
-# admin.site.register(Team, TeamAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Product, ProductAdmin)
 

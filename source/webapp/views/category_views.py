@@ -25,20 +25,20 @@ class CategoryListView(UserPassesTestMixin, ListView):
 class CategoryCreateView(UserPassesTestMixin, CreateView):
     model = Category
     template_name = 'add.html'
-    fields = ['name']
+    fields = ['category_name']
 
     def test_func(self):
         user = self.request.user
         return user.is_staff
 
     def form_valid(self, form):
-        text = form.cleaned_data['name']
-        if Category.objects.filter(name=text.capitalize()):
-            messages.error(self.request, 'Объект с таким названием уже существует!')
+        text = form.cleaned_data['category_name']
+        if Category.objects.filter(category_name=text.capitalize()):
+            messages.error(self.request, 'Категория с таким названием уже существует!')
             return render(self.request, 'add.html', {})
         else:
-            role = Category(name=text.capitalize())
-            role.save()
+            category = Category(category_name=text.capitalize())
+            category.save()
         return self.get_success_url()
 
     def get_success_url(self):
@@ -48,23 +48,22 @@ class CategoryCreateView(UserPassesTestMixin, CreateView):
 class CategoryUpdateView(UserPassesTestMixin, UpdateView):
     model = Category
     template_name = 'edit.html'
-    fields = ['name']
+    fields = ['category_name']
 
     def test_func(self):
         user = self.request.user
-        return user.is_staff or user.groups.filter(name='principal_staff')
+        return user.is_staff or user.groups.filter(category_name='principal_staff')
 
     def form_valid(self, form):
-        text = form.cleaned_data['name']
-        if Category.objects.filter(name=text.capitalize()):
-            print(text, 'tEXT')
-            messages.error(self.request, 'Объект с таким названием уже существует!')
+        text = form.cleaned_data['category_name']
+        if Category.objects.filter(category_name=text.capitalize()):
+            messages.error(self.request, 'Категория с таким названием уже существует!')
             return render(self.request, 'edit.html', {})
         else:
             pk = self.kwargs.get('pk')
-            role = get_object_or_404(Category, id=pk)
-            role.name = text.capitalize()
-            role.save()
+            category = get_object_or_404(Category, id=pk)
+            category.category_name = text.capitalize()
+            category.save()
         return self.get_success_url()
 
     def get_success_url(self):

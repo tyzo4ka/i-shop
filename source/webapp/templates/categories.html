@@ -4,10 +4,10 @@
         {% csrf_token %}
         <table class="table">
             <h1>Категории</h1>
-            {% if perms.webapp.add_category %}
+{#            {% if perms.webapp.add_category %}#}
                 <a href="{% url 'webapp:category_add' %}" class="btn btn-success  ml-5 my-3 hiddenbutton">Добавить
                     категорию</a>
-            {% endif %}
+{#            {% endif %}#}
             <thead>
             <tr>
                 <th scope="col">#</th>

@@ -1,11 +1,17 @@
 from django.contrib import admin
-from webapp.models import Category, Product
+from webapp.models import Category, Product, SubCategory
 
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['pk', 'category_name']
     list_filter = ['category_name']
     list_display_links = ['pk', 'category_name']
+
+
+class SubCategoryAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'sub_name']
+    list_filter = ['sub_name']
+    list_display_links = ['pk', 'sub_name']
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -16,4 +22,5 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(SubCategory, SubCategoryAdmin)
 

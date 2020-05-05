@@ -2,10 +2,18 @@ from django.db import models
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=20, verbose_name='Категория')
+    category_name = models.CharField(max_length=50, verbose_name='Категория')
 
     def __str__(self):
         return self.category_name
+
+class SubCategory(models.Model):
+    sub_name = models.CharField(max_length=50, verbose_name='Подраздел')
+    category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.PROTECT,
+                                 verbose_name='Категория')
+
+    def __str__(self):
+        return self.sub_name
 
 
 class Product(models.Model):

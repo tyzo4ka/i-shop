@@ -4,10 +4,14 @@
         {% csrf_token %}
         <table class="table">
             <h1>Категории</h1>
-{#            {% if perms.webapp.add_category %}#}
+            {#            {% if perms.webapp.add_category %}#}
+            <div class="row">
                 <a href="{% url 'webapp:category_add' %}" class="btn btn-success  ml-5 my-3 hiddenbutton">Добавить
                     категорию</a>
-{#            {% endif %}#}
+                <a href="{% url 'webapp:subcategory_add' %}" class="btn btn-success  ml-5 my-3 hiddenbutton">Добавить
+                    подраздел</a>
+            </div>
+            {#            {% endif %}#}
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -19,7 +23,7 @@
             {% for category in categories %}
                 <tbody>
                 <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
+                    <th scope="row" style="list-style-type: upper-roman">{{ forloop.counter }}</th>
                     <td>{{ category.category_name }}</td>
                     {% if perms.webapp.change_category %}
                         <td class="symbol"><a class='update hiddenbutton'
@@ -31,6 +35,21 @@
                         </td>
                     {% endif %}
                 </tr>
+                {% for subcategory in category.subcategories.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td style="padding-left: 30px">{{ subcategory.sub_name }}</td>
+                        {#                    {% if perms.webapp.change_category %}#}
+                        {#                        <td class="symbol"><a class='update hiddenbutton'#}
+                        {#                                              href="{% url 'webapp:category_change' category.pk %}">&#x270E;</a></td>#}
+                        {#                    {% endif %}#}
+                        {#                    {% if perms.webapp.delete_category %}#}
+                        {#                        <td class="symbol"><a class='delete hiddenbutton'#}
+                        {#                                              href="{% url 'webapp:category_delete' category.pk %}" style="color: red">&times;</a>#}
+                        {#                        </td>#}
+                        {#                    {% endif %}#}
+                    </tr>
+                {% endfor %}
                 </tbody>
             {% endfor %}
         </table>

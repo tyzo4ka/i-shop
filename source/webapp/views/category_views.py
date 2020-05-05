@@ -52,7 +52,7 @@ class CategoryUpdateView(UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         user = self.request.user
-        return user.is_staff or user.groups.filter(category_name='principal_staff')
+        return user.is_staff
 
     def form_valid(self, form):
         text = form.cleaned_data['category_name']

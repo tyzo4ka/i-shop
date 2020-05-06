@@ -106,7 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -122,13 +123,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_URL = '/static/'
-
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL ='webapp:index'
 LOGOUT_REDIRECT_URL = 'webapp:index'
 
-HOST_NAME = 'localhost:8000'
+HOST_NAME = 'http://localhost:8000'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
+
+# Для тестирования с mailtrap впишите сюда свои настройки с mailtrap.
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = 'e2aea783b75a0e'  # ваш user
+EMAIL_HOST_PASSWORD = '856b5e808cbd8b'  # ваш пароль
+EMAIL_PORT = '2525'
+

@@ -56,14 +56,16 @@ class SubCategoryUpdateView(UserPassesTestMixin, UpdateView):
         return user.is_staff
 
     def form_valid(self, form):
-        text = form.cleaned_data['category_name']
-        if SubCategory.objects.filter(sub_name=text.capitalize()):
+        subname = form.cleaned_data['sub_name']
+        category = form.cleaned_data['category']
+        if SubCategory.objects.filter(sub_name=subname.capitalize()):
             messages.error(self.request, 'Подраздел с таким названием уже существует!')
             return render(self.request, 'edit.html', {})
         else:
             pk = self.kwargs.get('pk')
             subcategory = get_object_or_404(SubCategory, id=pk)
-            subcategory.sub_name = text.capitalize()
+            subcategory.sub_name = subname.capitalize()
+            subcategory.category = category
             subcategory.save()
         return self.get_success_url()
 

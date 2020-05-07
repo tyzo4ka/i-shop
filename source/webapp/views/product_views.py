@@ -38,7 +38,7 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):
 
 class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     model = Product
-    template_name = 'delete.html'
+    template_name = 'product_delete.html'
     success_url = reverse_lazy('webapp:index')
     context_object_name = 'product'
     permission_required = 'webapp.delete_product'

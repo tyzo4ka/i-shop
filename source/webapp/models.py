@@ -7,6 +7,7 @@ class Category(models.Model):
     def __str__(self):
         return self.category_name
 
+
 class SubCategory(models.Model):
     sub_name = models.CharField(max_length=50, verbose_name='Подраздел')
     category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.PROTECT,

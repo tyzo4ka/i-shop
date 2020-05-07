@@ -6,46 +6,82 @@ from django.forms import widgets
 # from accounts.models import Profile
 
 
-class UserCreationForm(forms.Form):
-    username = forms.CharField(max_length=20, label='Username', required=True)
-    password = forms.CharField(max_length=20, min_length=8, label='Password', required=True,
-                               widget=forms.PasswordInput)
-    password_confirm = forms.CharField(max_length=20, min_length=8, label='Password Comfirm', required=True,
-                               widget=forms.PasswordInput)
-    email = forms.EmailField(label='Email', required=True)
+# class UserCreationForm(forms.Form):
+#     username = forms.CharField(max_length=20, label='Username', required=True)
+#     password = forms.CharField(max_length=20, min_length=8, label='Password', required=True,
+#                                widget=forms.PasswordInput)
+#     password_confirm = forms.CharField(max_length=20, min_length=8, label='Password Comfirm', required=True,
+#                                widget=forms.PasswordInput)
+#     email = forms.EmailField(label='Email', required=True)
+#
+#
+#     def clean_email(self):
+#         email = self.cleaned_data.get('email')
+#         try:
+#             User.objects.get(email=email)
+#             raise ValidationError('User with this email already exists',
+#                                   code='user_email_exists')
+#         except User.DoesNotExist:
+#             return email
+#
+#     def clean_username(self):
+#         username=self.cleaned_data.get('username')
+#         try:
+#             User.objects.get(username=username)
+#             raise ValidationError('User with this username already exists',
+#                               code='user_username_exists')
+#         except User.DoesNotExist:
+#             return username
+#
+#     def clean_password_confirmn(self):
+#         super().clean()
+#         password_1 = self.cleaned_data['password']
+#         password_2 = self.cleaned_data['password_confirm']
+#         if password_1 != password_2:
+#             raise ValidationError('Passwords do not match',
+#                                   code='passwords_do_not_match')
+#         return password_2
+#
+#
+#     class Meta:
+#         model = User
+#         fields = ['username', 'password', 'password_confirm', 'first_name', 'last_name', 'email']
 
+
+class UserCreationForm(forms.Form):
+    username = forms.CharField(max_length=100, label='Username', required=True)
+    password = forms.CharField(max_length=100, label='Password', required=True,
+                               widget=forms.PasswordInput)
+    password_confirm = forms.CharField(max_length=100, label='Password Confirm', required=True,
+                                       widget=forms.PasswordInput)
+    email = forms.EmailField(label='Email', required=True)
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         try:
             User.objects.get(email=email)
-            raise ValidationError('User with this email already exists',
+            raise ValidationError('Пользователь с указанным email существует',
                                   code='user_email_exists')
         except User.DoesNotExist:
             return email
 
     def clean_username(self):
-        username=self.cleaned_data.get('username')
+        username = self.cleaned_data.get('username')
         try:
             User.objects.get(username=username)
-            raise ValidationError('User with this username already exists',
-                              code='user_username_exists')
+            raise ValidationError('Пользователь с указанным именем пользователя существует, введите другое имя пользователя',
+                                  code='user_username_exists')
         except User.DoesNotExist:
             return username
 
-    def clean_password_confirmn(self):
+    def clean(self):
         super().clean()
         password_1 = self.cleaned_data['password']
         password_2 = self.cleaned_data['password_confirm']
         if password_1 != password_2:
-            raise ValidationError('Passwords do not match',
+            raise ValidationError('Указанные пароли не совпадают, попробуйте снова',
                                   code='passwords_do_not_match')
-        return password_2
-
-
-    class Meta:
-        model = User
-        fields = ['username', 'password', 'password_confirm', 'first_name', 'last_name', 'email']
+        return self.cleaned_data
 
 
 class UserInfoChangeForm(forms.ModelForm):

@@ -12,25 +12,9 @@
     {% for product_in_order in order.orderproduct_set.all %}
 
         <p>{{ product_in_order.product }}: {{ product_in_order.amount }}</p>
-        <p>Producrt pk {{ product_in_order.pk }}</p>
-        <p>Order pk {{ product_in_order.order.pk }}</p>
-        <a href="{% url 'webapp:order_product_update' product_in_order.order.pk product_in_order.pk %}">Изменить количество</a>
-
-    {% endfor %}
-    {% for product in order.products.all %}
-        <p>{{ product.name }}</p>
-        <p>Product pk {{ product.pk }}</p>
-        <p>Order pk {{ order.pk }}</p>
-        <a href="{% url 'webapp:order_product_update' order.pk product.pk%}">Изменить количество</a>
-{#        <a href="{% url 'webapp:order_product_delete' order.pk product.pk%}">Удалить товар</a>#}
-    {% endfor %}
-          <br>
-{#            <p>Статус заказа: {{ order.get_status_display }}</p>#}
-{#            <p><a href="{% url 'webapp:order_product_create' order.pk %}">Добавить товар</a></p>#}
-        {% for product_in_order in order.orderproduct_set.all %}
-
-        <p>{{ product_in_order.product }}: {{ product_in_order.amount }}</p>
-        <p>{{ product_in_order.pk }}</p>
-            <p>{{ product_in_order.order.products.pk }}</p>
+{#        <p>Producrt pk {{ product_in_order.pk }}</p>#}
+{#        <p>Order pk {{ product_in_order.order.pk }}</p>#}
+        <a href="{% url 'webapp:order_product_update' product_in_order.pk product_in_order.order.pk %}">Изменить количество</a>
+        <a href="{% url 'webapp:order_product_delete' product_in_order.pk product_in_order.order.pk %}">Удалить товар</a>
     {% endfor %}
 {% endblock %}

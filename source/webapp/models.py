@@ -46,6 +46,9 @@ class DeliveryAddress(models.Model):
     flat_number = models.CharField(max_length=5, null=True, blank=True, verbose_name="Номер квартиры/офиса")
     additional_info = models.CharField(max_length=200, null=True, blank=True, verbose_name="Дополнительная информация")
 
+    def __str__(self):
+        return f'{self.city}/{self.street}/{self.building_number}'
+
     class Meta:
         verbose_name = 'Адрес доставки'
         verbose_name_plural = 'Адреса доставки'

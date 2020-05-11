@@ -6,6 +6,7 @@ CITY_CHOICES = (
     ('Bishkek', 'Бишкек'),
 )
 
+
 class Category(models.Model):
     category_name = models.CharField(max_length=50, verbose_name='Категория')
 
@@ -54,23 +55,33 @@ class DeliveryAddress(models.Model):
         verbose_name_plural = 'Адреса доставки'
 
 
-# class Order(models.Model):
-#     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Пользователь', related_name='orders')
-#     first_name = models.CharField(max_length=100, verbose_name='Имя')
-#     last_name = models.CharField(max_length=100, verbose_name='Фамилия')
-#     email = models.EmailField(max_length=50, verbose_name='Email')
-#     phone = models.CharField(max_length=20, verbose_name='Телефон')
-#
-#     products = models.ManyToManyField(Product, through='OrderProduct', through_fields=('order', 'product'),
-#                                       verbose_name='Товары', related_name='orders')
-#     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default=ORDER_STATUS_CHOICES[0][0],
-#                               verbose_name='Статус')
-#     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-#     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
-#
-#     def __str__(self):
-#         return "{} / {}".format(self.email, self.phone)
-#
-#     class Meta:
-#         verbose_name = 'Заказ'
-#         verbose_name_plural = 'Заказы'
+class Order(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Пользователь', related_name='orders')
+    first_name = models.CharField(max_length=100, verbose_name='Имя')
+    last_name = models.CharField(max_length=100, verbose_name='Фамилия')
+    email = models.EmailField(max_length=50, verbose_name='Email')
+    phone = models.CharField(max_length=20, verbose_name='Телефон')
+    address = models.ForeignKey(DeliveryAddress, on_delete=models.PROTECT, verbose_name="Адрес доставки")
+    products = models.ManyToManyField(Product, through='OrderProduct', through_fields=('order', 'product'), verbose_name='Товары', related_name='orders')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+
+    def __str__(self):
+        return "{} / {}".format(self.email, self.phone)
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="orderproduct", verbose_name='Товар')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Количество')
+
+    def __str__(self):
+        return f'{self.product.name} {self.order}'
+
+    class Meta:
+        verbose_name = 'Товар в заказе'
+        verbose_name_plural = 'Товары в заказах'

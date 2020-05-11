@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.views.generic import DetailView, UpdateView
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .forms import UserCreationForm, UserInfoChangeForm, UserPasswordChangeForm
+from .forms import UserCreationForm, UserInfoChangeForm, CompanyInfoChangeForm, UserPasswordChangeForm
 from main.settings import HOST_NAME
 from accounts.models import Token, Profile
 from django.http import HttpResponseRedirect
@@ -53,6 +53,7 @@ def register_view(request):
             profile = Profile(
                 user=user,
                 mobile_phone=form.cleaned_data['phone_number'],
+                type=form.cleaned_data['type']
             )
             user.save()
             profile.save()
@@ -92,7 +93,11 @@ def user_activate(request):
         # редирект на главную
         # return redirect('webapp:index')
         # return redirect('accounts:user_update')
-        return HttpResponseRedirect(reverse('accounts:user_update', kwargs={"pk": user.pk}))
+        print(user.profile.type)
+        if user.profile.type == 'client':
+            return HttpResponseRedirect(reverse('accounts:user_update', kwargs={"pk": user.pk}))
+        else:
+            return HttpResponseRedirect(reverse('accounts:company_update', kwargs={"pk": user.pk}))
     except Token.DoesNotExist:
         # если токена нет - сразу редирект
         return redirect('webapp:index')
@@ -109,6 +114,19 @@ class UserInfoChangeView(UserPassesTestMixin, UpdateView):
     template_name = 'user_update.html'
     context_object_name = 'user_object'
     form_class = UserInfoChangeForm
+
+    def test_func(self):
+        return self.get_object() == self.request.user
+
+    def get_success_url(self):
+        return reverse('accounts:user_detail', kwargs={'pk': self.object.pk})
+
+
+class CompanyInfoChangeView(UserPassesTestMixin, UpdateView):
+    model = User
+    template_name = 'user_update.html'
+    context_object_name = 'user_object'
+    form_class = CompanyInfoChangeForm
 
     def test_func(self):
         return self.get_object() == self.request.user

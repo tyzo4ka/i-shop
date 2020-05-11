@@ -4,6 +4,8 @@
 {% block menu %}
     {% if perms.webapp.product_add %}
         <li class="nav-item"><a href="{% url 'webapp:product_create' %}" class="nav-link">Добавить товар</a></li>
+        <li class="nav-item"><a href="{% url 'webapp:orders' %}" class="nav-link">Заказы</a></li>
+
     {% endif %}
 {% endblock %}
 {% block content %}

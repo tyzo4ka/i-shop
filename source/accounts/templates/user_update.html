@@ -1,13 +1,42 @@
+{#{% extends 'base.html' %}#}
+{#{% block title %}{{ user_object.username }}{% endblock %}#}
+{#{% block menu %}#}
+{#    {% if user_object == request.user %}#}
+{#        <li><a href="#">Change Password</a></li>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+{#{% block content %}#}
+{#    <h2>Edit Profile: {{ user_object.username }}</h2>#}
+{#    <form action="{% url 'accounts:user_update' user_object.pk %}" method="post" enctype="multipart/form-data">#}
+{#        {% include 'partial/form.html' with button_text="Update" %}#}
+{#    </form>#}
+{#{% endblock %}#}
+
 {% extends 'base.html' %}
-{% block title %}{{ user_object.username }}{% endblock %}
-{% block menu %}
-    {% if user_object == request.user %}
-        <li><a href="#">Change Password</a></li>
-    {% endif %}
-{% endblock %}
 {% block content %}
-    <h2>Edit Profile: {{ user_object.username }}</h2>
-    <form action="{% url 'accounts:user_update' user_object.pk %}" method="post" enctype="multipart/form-data">
-        {% include 'partial/form.html' with button_text="Update" %}
-    </form>
+        <h1 class="text-center">Регистрация</h1>
+        <div class="container" style="width: 500px">
+        <form action="{% url 'accounts:user_update' user_object.pk %}" method="post" enctype="multipart/form-data">
+            {% include "partial/form.html" %}
+            <p class="text-center"><input type="submit" value="Зарегистрировать" class="btn btn-success"></p>
+        </form>
+        </div>
+{% endblock %}
+
+{% block scripts %}
+
+    <!-- jQuery -->
+
+  <!-- XDSoft DateTimePicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+<script>
+  $(function () {
+    $("#id_birth_date").datetimepicker({
+      {#format: 'm-d-Y',#}
+        format: 'Y-m-d',
+    });
+  });
+  </script>
 {% endblock %}

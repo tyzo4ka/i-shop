@@ -7,7 +7,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from .forms import UserCreationForm, UserInfoChangeForm, UserPasswordChangeForm
 from main.settings import HOST_NAME
-from accounts.models import Token
+from accounts.models import Token, Profile
+from django.http import HttpResponseRedirect
+
 
 
 
@@ -40,11 +42,22 @@ def register_view(request):
         if form.is_valid():
             user = User(
                 username=form.cleaned_data['username'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                # phone_number=form.cleaned_data['phone_number'],
                 email=form.cleaned_data['email'],
                 is_active=False  # user не активный до подтверждения email
             )
             user.set_password(form.cleaned_data['password'])
             user.save()
+            profile = Profile(
+                user=user,
+                mobile_phone=form.cleaned_data['phone_number'],
+            )
+            user.save()
+            profile.save()
+            # user.profile.mobile_phone = form.cleaned_data['phone_number']
+            # user.profile.save()
 
             # токен для активации, его сложнее угадать, чем pk user-а.
             token = Token.objects.create(user=user)
@@ -77,7 +90,9 @@ def user_activate(request):
         login(request, user)
 
         # редирект на главную
-        return redirect('webapp:index')
+        # return redirect('webapp:index')
+        # return redirect('accounts:user_update')
+        return HttpResponseRedirect(reverse('accounts:user_update', kwargs={"pk": user.pk}))
     except Token.DoesNotExist:
         # если токена нет - сразу редирект
         return redirect('webapp:index')
